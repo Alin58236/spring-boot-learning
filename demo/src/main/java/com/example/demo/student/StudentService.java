@@ -25,6 +25,10 @@ public class StudentService {
         return studentRepository.findAll();
     }//folosim findAll pentru ca intoarce o lista
 
+    public void addNewStudent(Student student) {
+        System.out.println(student);
+    }
+
     //serves the info to the controller
     //needs routing logic (in Spring is called wiring, and it tells the controller to get the info from the service)
 }

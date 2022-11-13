@@ -1,9 +1,7 @@
 package com.example.demo.student;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -12,8 +10,7 @@ import java.util.List;
 @RequestMapping(path="api/v1/student") //ca sa primeasca request-uri pe URI-ul specificat
 public class StudentController {
 
-    private final StudentService studentService;//its not going to work because below we didnt reference it as "new StudentService()".
-    //we will solve this problem by using @ and dependency injection
+    private final StudentService studentService;//will be referenced with @Autowired so we don't need to instantiate it
 
     @Autowired //this will instantiate the arguments. We must also tell Spring that this StudentService is a class that must be instantiated, so it will be a @Bean -> $see StudentService class$
     public StudentController(StudentService studentService){
@@ -30,4 +27,10 @@ public class StudentController {
     //logica e acum in serviciu.
 
     //flow-ul logic de date este: StudentController apeleaza getStudents() din StudentService -> StudentService ia info din DB si returneaza in controller -> controller-ul fucntioneaza ca un API si da info mai departe in browser.
+
+    @PostMapping
+    public void registerNewStudent(@RequestBody Student student){
+        studentService.addNewStudent(student);
+    }
+    //apeleaza addNewStudent din service
 }

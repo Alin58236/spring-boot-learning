@@ -1,8 +1,13 @@
 package com.example.demo.student;
 
+import net.bytebuddy.asm.Advice;
+import org.springframework.context.annotation.Bean;
+
 import javax.annotation.processing.Generated;
-import javax.persistence.*;
+import javax.persistence.*; // make sure you always have this
 import java.time.LocalDate;
+import java.time.Period;
+
 @Entity //for hibernate
 @Table //for the table in our DB
 public class Student {
@@ -17,6 +22,7 @@ public class Student {
             generator = "student_sequence")
     private Long id;
     private String name;
+    @Transient //this field doesn't need to be a column -> it will be calculated so we will remove it from the constructors
     private Integer age;
     private LocalDate dob;
     private String email;
@@ -24,10 +30,9 @@ public class Student {
     public Student() {
     }
 
-    public Student(String name, Integer age, LocalDate dob, String email) {
+    public Student(String name, LocalDate dob, String email) {
 
         this.name = name;
-        this.age = age;
         this.dob = dob;
         this.email = email;
     }
@@ -48,14 +53,6 @@ public class Student {
         this.name = name;
     }
 
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-    }
-
     public LocalDate getDob() {
         return dob;
     }
@@ -70,6 +67,10 @@ public class Student {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Integer getAge(){
+        return Period.between(this.dob, LocalDate.now()).getYears();
     }
 
     @Override
