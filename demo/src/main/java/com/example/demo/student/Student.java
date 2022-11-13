@@ -1,9 +1,20 @@
 package com.example.demo.student;
 
+import javax.annotation.processing.Generated;
+import javax.persistence.*;
 import java.time.LocalDate;
-
+@Entity //for hibernate
+@Table //for the table in our DB
 public class Student {
 
+    @Id
+    @SequenceGenerator(
+            name="student_sequence",
+            sequenceName = "student_sequence",
+            allocationSize = 1)
+    @GeneratedValue(
+            strategy=GenerationType.SEQUENCE,
+            generator = "student_sequence")
     private Long id;
     private String name;
     private Integer age;
